@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'] });
 
+import Container from '@/components/Container';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -17,10 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} bg-zinc-100 text-zinc-900 min-h-screen `}
-      >
+      <body className={`${inter.className} text-gray-900 min-h-screen overflow-hidden bg-zinc-300`}>
+        <Container>
         {children}
+        </Container>
       </body>
     </html>
   );
