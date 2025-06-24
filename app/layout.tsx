@@ -5,6 +5,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 import Container from '@/components/Container';
 import './globals.css';
+import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} text-gray-900 min-h-screen overflow-hidden bg-zinc-300`}>
+        <Navbar/>
         <Container>
         {children}
         </Container>
