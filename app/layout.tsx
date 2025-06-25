@@ -25,7 +25,10 @@ export default function RootLayout({
       >
         <Container>
           <Navbar />
+          <main className='min-h-screen p-10'>
+
           {children}
+          </main>
         <Footer />
         </Container>
       </body>
