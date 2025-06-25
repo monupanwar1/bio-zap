@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'] });
-
 import Container from '@/components/Container';
-import './globals.css';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,17 +19,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scrollbar-hide">
       <body
-        className={`${inter.className} text-gray-900  min-h-screen overflow-auto bg-zinc-300 w-full`}
+        className={`${inter.className} text-gray-900 min-h-screen overflow-y-scroll bg-zinc-300 w-full scrollbar-hide relative`}
       >
+        {/* Decorative blurred circles */}
+
         <Container>
           <Navbar />
-          <main className='min-h-screen p-10'>
-
-          {children}
+          <main className="w-full p-10 md:max-w-full md:min-h-screen h-full cursor-pointer relative z-10">
+            <div className="absolute z-0 w-48 h-48 bg-blue-500 opacity-30 rounded-full top-10 left-10 blur-3xl"></div>
+            <div className="absolute z-0 w-48 h-48 bg-purple-500 opacity-30 rounded-full bottom-10 right-10 blur-3xl"></div>
+            {children}
           </main>
-        <Footer />
+          <Footer />
         </Container>
       </body>
     </html>

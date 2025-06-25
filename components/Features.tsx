@@ -16,7 +16,7 @@ const features: Feature[] = [
 ];
 export default function Features() {
   return (
-    <section className="grid gap-8 md:grid:col-3 mt-20 ">
+    <section className="grid gap-8 md:grid:col-3 mt-16 ">
       {features.map((feature, index) => (
         <div
           key={index}
