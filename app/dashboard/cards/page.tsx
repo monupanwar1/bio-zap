@@ -1,7 +1,25 @@
-export default function page() {
+import CardPreview from "@/components/userCard";
+
+
+export default function PreviewPage() {
   return (
-    <main className="flex flex-col items-center text-center relative p-40 ">
-      all cards
-    </main>
+    <CardPreview
+      avatarUrl="/avatar.jpg" 
+      title="Monu Panwar"
+      links={[
+        {
+          label: 'GitHub',
+          url: 'https://github.com/monupanwar1',
+          icon: 'github',
+        },
+        {
+          label: 'LinkedIn',
+          url: 'https://linkedin.com/in/monupanwar',
+          icon: 'linkedin',
+        },
+        { label: 'website', url: 'https://monupanwar.dev', icon: 'globe' },
+        { label: 'twitter', url: 'https://x.com/monupanwar', icon: 'twitter' },
+      ]}
+    />
   );
 }
