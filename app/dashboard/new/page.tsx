@@ -1,7 +1,209 @@
-export default function page() {
+'use client';
+
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import {
+  Trash2,
+  Plus,
+  Github,
+  Twitter,
+  Linkedin,
+  Globe,
+  UserCircle,
+} from 'lucide-react';
+import { useForm, useFieldArray } from 'react-hook-form';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import Image from 'next/image';
+
+const socialIcons = [
+  { value: 'github', label: 'GitHub', icon: Github },
+  { value: 'twitter', label: 'Twitter', icon: Twitter },
+  { value: 'linkedin', label: 'LinkedIn', icon: Linkedin },
+  { value: 'website', label: 'Website', icon: Globe },
+];
+
+const linkSchema = z.object({
+  label: z.string().min(1, 'Label required'),
+  url: z.string().url('Invalid URL'),
+  icon: z.string().min(1, 'Choose an icon'),
+});
+
+const formSchema = z.object({
+  links: z.array(linkSchema).min(1, 'At least one link'),
+});
+
+type FormValues = z.infer<typeof formSchema>;
+
+export default function MultiLinkForm() {
+  const [avatar, setAvatar] = useState<string | null>(null);
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      links: [{ label: '', url: '', icon: 'github' }],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: 'links',
+  });
+
+  const onSubmit = (data: FormValues) => {
+    console.log({ avatar, ...data });
+    form.reset();
+    setAvatar(null);
+  };
+
   return (
-    <main className="flex flex-col items-center text-center relative p-40 ">
-      add new cards
-    </main>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 max-w-4xl mx-auto p-6 border rounded-lg shadow-md bg-gray-100"
+      >
+        {/* Avatar Preview + Upload */}
+        <div className="flex flex-col items-center space-y-2">
+          {avatar ? (
+            <Image
+              src={avatar}
+              alt="Avatar Preview"
+              width={96}
+              height={96}
+              className="rounded-full object-cover w-24 h-24 border"
+            />
+          ) : (
+            <UserCircle className="w-24 h-24 text-gray-400" />
+          )}
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setAvatar(URL.createObjectURL(file));
+              }
+            }}
+            className="w-full max-w-xs"
+          />
+        </div>
+
+        {/* Dynamic Link Fields */}
+        {fields.map((field, index) => {
+          const IconComponent =
+            socialIcons.find(
+              (icon) => icon.value === form.watch(`links.${index}.icon`),
+            )?.icon || Globe;
+
+          return (
+            <div
+              key={field.id}
+              className="border p-4 rounded-md space-y-4 bg-white relative"
+            >
+              {fields.length > 1 && (
+                <button
+                  type="button"
+                  className="absolute top-2 right-2 text-red-500"
+                  onClick={() => remove(index)}
+                >
+                  <Trash2 size={18} />
+                </button>
+              )}
+
+              {/* Icon Preview */}
+              <div className="flex items-center space-x-2">
+                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center border">
+                  <IconComponent size={20} />
+                </div>
+                <span className="text-sm text-gray-500">
+                  Social Icon Preview
+                </span>
+              </div>
+
+              {/* Label */}
+              <FormField
+                control={form.control}
+                name={`links.${index}.label`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Label</FormLabel>
+                    <FormControl>
+                      <Input placeholder="GitHub" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* URL */}
+              <FormField
+                control={form.control}
+                name={`links.${index}.url`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>URL</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="https://github.com/yourname"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Icon select */}
+              <FormField
+                control={form.control}
+                name={`links.${index}.icon`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Select Icon</FormLabel>
+                    <FormControl>
+                      <select
+                        {...field}
+                        className="mt-1 block w-full border p-2 rounded"
+                      >
+                        {socialIcons.map((icon) => (
+                          <option key={icon.value} value={icon.value}>
+                            {icon.label}
+                          </option>
+                        ))}
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          );
+        })}
+
+        {/* Add Link Button */}
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => append({ label: '', url: '', icon: 'github' })}
+        >
+          <Plus className="mr-2" size={16} />
+          Add Another Link
+        </Button>
+
+        {/* Submit Button */}
+        <div>
+          <Button type="submit">Save Links</Button>
+        </div>
+      </form>
+    </Form>
   );
 }
