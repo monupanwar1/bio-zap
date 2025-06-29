@@ -69,9 +69,11 @@ export default function MultiLinkForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 max-w-4xl mx-auto p-6 border rounded-lg shadow-md bg-gray-100"
+        className="space-y-6 max-w-4xl mx-auto p-6 border rounded-lg shadow-md 
+                   bg-gray-100 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 
+                   transition-colors duration-300"
       >
-        {/* Avatar Preview + Upload */}
+        {/* Avatar Upload */}
         <div className="flex flex-col items-center space-y-2">
           {avatar ? (
             <Image
@@ -79,10 +81,10 @@ export default function MultiLinkForm() {
               alt="Avatar Preview"
               width={96}
               height={96}
-              className="rounded-full object-cover w-24 h-24 border"
+              className="rounded-full object-cover w-24 h-24 border shadow-md"
             />
           ) : (
-            <UserCircle className="w-24 h-24 text-gray-400" />
+            <UserCircle className="w-24 h-24 text-gray-400 dark:text-gray-600" />
           )}
           <Input
             type="file"
@@ -93,11 +95,11 @@ export default function MultiLinkForm() {
                 setAvatar(URL.createObjectURL(file));
               }
             }}
-            className="w-full max-w-xs"
+            className="w-full max-w-xs bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700"
           />
         </div>
 
-        {/* Dynamic Link Fields */}
+        {/* Link Fields */}
         {fields.map((field, index) => {
           const IconComponent =
             socialIcons.find(
@@ -107,24 +109,30 @@ export default function MultiLinkForm() {
           return (
             <div
               key={field.id}
-              className="border p-4 rounded-md space-y-4 bg-white relative"
+              className="border p-4 rounded-md space-y-4 bg-white dark:bg-zinc-900 
+                         border-gray-300 dark:border-zinc-700 relative transition-colors duration-300 shadow-sm"
             >
               {fields.length > 1 && (
                 <button
                   type="button"
-                  className="absolute top-2 right-2 text-red-500"
+                  className="absolute top-2 right-2 text-red-500 hover:text-red-700 transition"
                   onClick={() => remove(index)}
                 >
                   <Trash2 size={18} />
                 </button>
               )}
 
-              {/* Icon Preview */}
               <div className="flex items-center space-x-2">
-                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center border">
-                  <IconComponent size={20} />
+                <div
+                  className="w-10 h-10 rounded-full bg-gray-100 dark:bg-zinc-800 
+                                flex items-center justify-center border border-gray-300 dark:border-zinc-700"
+                >
+                  <IconComponent
+                    size={20}
+                    className="text-gray-700 dark:text-gray-300"
+                  />
                 </div>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-gray-500 dark:text-gray-400">
                   Social Icon Preview
                 </span>
               </div>
@@ -135,9 +143,13 @@ export default function MultiLinkForm() {
                 name={`links.${index}.label`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Label</FormLabel>
+                    <FormLabel className="dark:text-white">Label</FormLabel>
                     <FormControl>
-                      <Input placeholder="GitHub" {...field} />
+                      <Input
+                        placeholder="GitHub"
+                        {...field}
+                        className="bg-white dark:bg-zinc-800 border-gray-300 dark:border-zinc-600"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -150,11 +162,12 @@ export default function MultiLinkForm() {
                 name={`links.${index}.url`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>URL</FormLabel>
+                    <FormLabel className="dark:text-white">URL</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="https://github.com/yourname"
                         {...field}
+                        className="bg-white dark:bg-zinc-800 border-gray-300 dark:border-zinc-600"
                       />
                     </FormControl>
                     <FormMessage />
@@ -162,17 +175,20 @@ export default function MultiLinkForm() {
                 )}
               />
 
-              {/* Icon select */}
+              {/* Icon Select */}
               <FormField
                 control={form.control}
                 name={`links.${index}.icon`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Select Icon</FormLabel>
+                    <FormLabel className="dark:text-white">
+                      Select Icon
+                    </FormLabel>
                     <FormControl>
                       <select
                         {...field}
-                        className="mt-1 block w-full border p-2 rounded"
+                        className="mt-1 block w-full border p-2 rounded bg-white dark:bg-zinc-800 
+                                   text-gray-900 dark:text-white border-gray-300 dark:border-zinc-600"
                       >
                         {socialIcons.map((icon) => (
                           <option key={icon.value} value={icon.value}>
@@ -189,19 +205,22 @@ export default function MultiLinkForm() {
           );
         })}
 
-        {/* Add Link Button */}
+        {/* Add Link */}
         <Button
           type="button"
           variant="outline"
           onClick={() => append({ label: '', url: '', icon: 'github' })}
+          className="dark:border-gray-600 dark:text-white"
         >
           <Plus className="mr-2" size={16} />
           Add Another Link
         </Button>
 
-        {/* Submit Button */}
+        {/* Submit */}
         <div>
-          <Button type="submit">Save Links</Button>
+          <Button type="submit" className="dark:bg-white dark:text-black">
+            Save Links
+          </Button>
         </div>
       </form>
     </Form>

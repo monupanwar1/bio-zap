@@ -20,10 +20,14 @@ export default function Features() {
       {features.map((feature, index) => (
         <div
           key={index}
-          className="border border-white/40 backdrop-blur-2xl bg-white/40 shadow p-8 hover:bg-gray-50 scale-0.25 transition"
+          className="border border-gray-300 dark:border-gray-700 backdrop-blur-2xl bg-white/40 dark:bg-zinc-800/40 shadow p-8 hover:bg-gray-50 dark:hover:bg-zinc-700 transition duration-300 rounded-xl"
         >
-          <h3 className="text-xl font-semibold bm-2 ">{feature.title}</h3>
-          <p className="text-gray-700">{feature.description}</p>
+          <h3 className="text-xl font-semibold bm-2 dark:text-white ">
+            {feature.title}
+          </h3>
+          <p className="text-gray-700 dark:text-gray-300">
+            {feature.description}
+          </p>
         </div>
       ))}
     </section>

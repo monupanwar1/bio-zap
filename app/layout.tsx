@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
+import { ThemeProvider } from 'next-themes';
 import { Inter } from 'next/font/google';
 
-import Container from '@/components/Container';
+import Container from '@/components/Container'; // ✅ You missed this
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import './globals.css';
@@ -21,19 +22,26 @@ export default function RootLayout({
   return (
     <html lang="en" className="scrollbar-hide">
       <body
-        className={`${inter.className} text-gray-900 min-h-screen overflow-y-scroll bg-zinc-300 w-full scrollbar-hide relative`}
+        className={`${inter.className} text-gray-900 dark:text-white bg-zinc-300 dark:bg-zinc-900 min-h-screen overflow-y-scroll w-full scrollbar-hide relative`}
       >
-        {/* Decorative blurred circles */}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Container>
+            <Navbar />
+            <main className="w-full p-10 md:max-w-full md:min-h-screen h-full cursor-pointer relative z-10">
+              {/* Blurred background circles */}
+              <div className="absolute z-0 w-48 h-48 bg-blue-500 dark:bg-blue-700 opacity-30 rounded-full top-10 left-10 blur-3xl" />
+              <div className="absolute z-0 w-48 h-48 bg-purple-500 dark:bg-purple-700 opacity-30 rounded-full bottom-10 right-10 blur-3xl" />
 
-        <Container>
-          <Navbar />
-          <main className="w-full p-10 md:max-w-full md:min-h-screen h-full cursor-pointer relative z-10">
-            <div className="absolute z-0 w-48 h-48 bg-blue-500 opacity-30 rounded-full top-10 left-10 blur-3xl"></div>
-            <div className="absolute z-0 w-48 h-48 bg-purple-500 opacity-30 rounded-full bottom-10 right-10 blur-3xl"></div>
-            {children}
-          </main>
-          <Footer />
-        </Container>
+              {children}
+            </main>
+            <Footer />
+          </Container>
+        </ThemeProvider>
       </body>
     </html>
   );
