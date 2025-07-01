@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite" // You can switch to PostgreSQL or another DB later
+  url      = env("DATABASE_URL")
+}
+
+model Card {
+  id        Int      @id @default(autoincrement())
+  userId    String   // Clerk user ID
+  slug      String   @unique
+  title     String
+  avatarUrl String   
+  createdAt DateTime @default(now())
+
+  links     Link[]   
+}
+
+model Link {
+  id      Int    @id @default(autoincrement())
+  cardId  Int
+  label   String
+  url     String
+  icon    String 
+
+  card    Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
