@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scrollbar-hide">
       <body
-        className={`${inter.className} text-gray-900 dark:text-white bg-zinc-300 dark:bg-zinc-900 min-h-screen overflow-y-scroll w-full scrollbar-hide relative`}
+        className={`${inter.className} text-gray-900 cursor-pointer select-none dark:text-white bg-zinc-300 dark:bg-zinc-900 min-h-screen overflow-y-scroll w-full scrollbar-hide relative`}
       >
         <ThemeProvider
           attribute="class"
