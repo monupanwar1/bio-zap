@@ -4,7 +4,7 @@ import Image from 'next/image';
 type Link = {
   label: string;
   url: string;
-  icon: string; // e.g. "github", "linkedin", "x", "website"
+  icon: string;
 };
 
 type CardPreviewProps = {
@@ -13,46 +13,56 @@ type CardPreviewProps = {
   links: Link[];
 };
 
-export default function CardPreview({
+export default function UserCard({
   avatarUrl,
   title,
   links,
 }: CardPreviewProps) {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-14">
-      <Card className="w-full md:max-w-2xl shadow-xl border border-border rounded-md h-[600px]">
-        {/* Avatar and Title */}
-        <CardHeader className="flex flex-col items-center gap-4">
+    <div className="px-4 py-10 w-full flex justify-center">
+      <Card className="w-full max-w-xl border shadow-xl rounded-2xl bg-background text-foreground transition-colors">
+        {/* Avatar + Name */}
+        <CardHeader className="flex flex-col items-center gap-4 py-8">
           <Image
             src={avatarUrl}
             width={96}
             height={96}
             alt="Avatar"
-            className="rounded-full object-cover border"
+            className="rounded-full object-cover border-2 border-border shadow-sm"
           />
-          <h1 className="text-xl font-bold">{title}</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-center">
+            {title}
+          </h1>
         </CardHeader>
 
-        {/* Link List */}
-        <CardContent className="flex flex-col gap-4">
-          {links.map((link, index) => (
-            <a
-              key={index}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-8 px-4 py-2 border rounded-md hover:bg-accent transition text-foreground"
-            >
-              <Image
-                src={`/${link.icon}.svg`}
-                alt={`${link.label} icon`}
-                width={20}
-                height={20}
-                className="object-contain"
-              />
-              <span className="font-medium">{link.label}</span>
-            </a>
-          ))}
+        {/* Links Section */}
+        <CardContent className="flex flex-col gap-4 px-6 pb-8">
+          {links.length === 0 ? (
+            <p className="text-muted-foreground text-center">
+              No links available
+            </p>
+          ) : (
+            links.map((link, index) => (
+              <a
+                key={index}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 px-4 py-3 rounded-lg border border-border hover:bg-accent hover:text-accent-foreground transition"
+              >
+                <Image
+                  src={`/${link.icon}.svg`}
+                  alt={`${link.label} icon`}
+                  width={24}
+                  height={24}
+                  className="object-contain"
+                />
+                <span className="font-medium text-sm sm:text-base">
+                  {link.label}
+                </span>
+              </a>
+            ))
+          )}
         </CardContent>
       </Card>
     </div>

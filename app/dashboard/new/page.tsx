@@ -1,29 +1,30 @@
 'use client';
 
+import { addCard } from '@/actions/actions';
+import { Button } from '@/components/ui/button';
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  Trash2,
-  Plus,
   Github,
-  Twitter,
-  Linkedin,
   Globe,
+  Linkedin,
+  Plus,
+  Trash2,
+  Twitter,
   UserCircle,
 } from 'lucide-react';
-import { useForm, useFieldArray } from 'react-hook-form';
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
 import Image from 'next/image';
+import { useState } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import * as z from 'zod';
 
 const socialIcons = [
   { value: 'github', label: 'GitHub', icon: Github },
@@ -59,10 +60,16 @@ export default function MultiLinkForm() {
     name: 'links',
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log({ avatar, ...data });
-    form.reset();
-    setAvatar(null);
+  const onSubmit = async (data: FormValues) => {
+    if (!avatar) return alert('Avtar required');
+
+    try {
+      await addCard(avatar, data.links);
+      form.reset();
+      setAvatar(null);
+    } catch (err) {
+      console.log('Failed ', err);
+    }
   };
 
   return (
