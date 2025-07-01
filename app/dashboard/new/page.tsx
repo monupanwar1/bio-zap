@@ -22,6 +22,7 @@ import {
   UserCircle,
 } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -46,6 +47,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function MultiLinkForm() {
+  const router = useRouter();
   const [avatar, setAvatar] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
@@ -64,9 +66,12 @@ export default function MultiLinkForm() {
     if (!avatar) return alert('Avtar required');
 
     try {
-      await addCard(avatar, data.links);
+      const res = await addCard(avatar, data.links);
       form.reset();
       setAvatar(null);
+      if (res?.slug) {
+        router.push(`/${res.slug}`);
+      }
     } catch (err) {
       console.log('Failed ', err);
     }
