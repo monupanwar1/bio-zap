@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build": "prisma generate && next build"
+}
+
   },
   "dependencies": {
     "@clerk/backend": "^2.4.0",
