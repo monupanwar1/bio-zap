@@ -12,7 +12,7 @@ export default function HeroSection() {
         </p>
         <Link
           className="bg-neutral-900 dark:bg-white text-white dark:text-black px-6 py-3 rounded-md hover:bg-gray-800 dark:hover:bg-gray-200 transition"
-          href="#"
+          href="/create-card"
         >
           Get Started
         </Link>

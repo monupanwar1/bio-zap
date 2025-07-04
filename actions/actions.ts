@@ -1,8 +1,20 @@
 'use server';
 
 import prisma from '@/lib/db';
+
+import { clerkClient } from '@clerk/clerk-sdk-node';
 import { auth } from '@clerk/nextjs/server';
 import { nanoid } from 'nanoid';
+
+export async function getUserName() {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error('Unauthorized');
+  }
+  const user = await clerkClient.users.getUser(userId);
+  const name = user.firstName || user.username || 'My Card';
+  return name;
+}
 
 export async function addCard(
   avatarUrl: string,
@@ -13,11 +25,15 @@ export async function addCard(
     throw new Error('Unauthorized');
   }
 
+  // 🔥 Fetch user from Clerk
+  
+ const name = await getUserName();
+
   const slug = nanoid(8);
 
   return await prisma.card.create({
     data: {
-      title: 'My Card',
+      title: `${name} Card`, // 👈 Use Clerk's name here
       avatarUrl,
       userId,
       slug,

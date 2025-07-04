@@ -1,13 +1,15 @@
+import { getUserName } from '@/actions/actions';
 import { LayoutGrid, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const name = await getUserName();
   return (
     <main className="flex flex-col items-center text-center p-20 dark:bg-zinc-950 transition-colors duration-300 min-h-screen">
       <section>
         <div className="flex flex-col space-y-2">
           <h1 className="font-bold lg:text-6xl text-5xl mb-4 z-10 text-gray-900 dark:text-white">
-            Welcome Back
+            Welcome Back {name}
           </h1>
           <p className="text-xl z-10 text-gray-700 dark:text-gray-300">
             Manage your bio card with ease here

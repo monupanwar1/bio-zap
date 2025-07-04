@@ -1,12 +1,13 @@
 "use client"
 import { getUserCard, removeUserCard } from '@/actions/actions';
 import UserCard from '@/components/userCard';
+import { CardData } from '@/Types/types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function AllCardsPage() {
   const router = useRouter();
-  const [cards, setCards] = useState<any[]>([]);
+  const [cards, setCards] = useState<CardData[]>([]);
 
   useEffect(() => {
     const fetchCard = async () => {
