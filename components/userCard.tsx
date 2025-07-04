@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Trash2 } from 'lucide-react';
+import { Edit2, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from './ui/button';
 
@@ -13,8 +13,11 @@ type CardPreviewProps = {
   avatarUrl: string;
   title: string;
   links: Link[];
+  slug?: string;
   canDelete?: boolean;
   onDelete?: () => void;
+  canUpdate?: boolean;
+  onUpdate?: () => void;
 };
 
 export default function UserCard({
@@ -23,6 +26,8 @@ export default function UserCard({
   links,
   canDelete = false,
   onDelete,
+  canUpdate = false,
+  onUpdate,
 }: CardPreviewProps) {
   return (
     <div className="px-4 py-10 w-full flex justify-center">
@@ -49,6 +54,16 @@ export default function UserCard({
             onClick={onDelete}
           >
             <Trash2 size={20} />
+          </Button>
+        )}
+        {canUpdate && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-2 right-10 text-blue-500 hover:text-blue-700"
+            onClick={() => onUpdate?.()}
+          >
+            <Edit2 size={20} />
           </Button>
         )}
 

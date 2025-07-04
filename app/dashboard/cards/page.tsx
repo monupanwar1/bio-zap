@@ -41,7 +41,10 @@ export default function AllCardsPage() {
               title={card.title}
               links={card.links}
               canDelete
+              canUpdate
+              slug={card.slug}
               onDelete={() => handleRemoveCard(card.id)}
+              onUpdate={() => router.push(`/dashboard/edit/${card.slug}`)}
             />
           ))}
         </div>

@@ -5,6 +5,7 @@ export type Link = {
 };
 export type CardData = {
   id: number;
+  slug: string;
   avatarUrl: string;
   title: string;
   links: Link[];
