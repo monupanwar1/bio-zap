@@ -13,14 +13,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  Github,
-  Globe,
-  Linkedin,
-  Plus,
-  Trash2,
-  Twitter,
-  UserCircle,
-} from 'lucide-react';
+  FaGithub,
+  FaTwitter,
+  FaLinkedin,
+  FaGlobe,
+  FaUserCircle,
+  FaTrashAlt,
+  FaPlus,
+} from 'react-icons/fa';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -28,10 +28,10 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const socialIcons = [
-  { value: 'github', label: 'GitHub', icon: Github },
-  { value: 'twitter', label: 'Twitter', icon: Twitter },
-  { value: 'linkedin', label: 'LinkedIn', icon: Linkedin },
-  { value: 'website', label: 'Website', icon: Globe },
+  { value: 'github', label: 'GitHub', icon: FaGithub },
+  { value: 'twitter', label: 'Twitter', icon: FaTwitter },
+  { value: 'linkedin', label: 'LinkedIn', icon: FaLinkedin },
+  { value: 'website', label: 'Website', icon: FaGlobe },
 ];
 
 const linkSchema = z.object({
@@ -41,6 +41,7 @@ const linkSchema = z.object({
 });
 
 const formSchema = z.object({
+  title: z.string().min(1, 'Card title is required'),
   links: z.array(linkSchema).min(1, 'At least one link'),
 });
 
@@ -53,6 +54,7 @@ export default function MultiLinkForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title: 'Card',
       links: [{ label: '', url: '', icon: 'github' }],
     },
   });
@@ -63,7 +65,7 @@ export default function MultiLinkForm() {
   });
 
   const onSubmit = async (data: FormValues) => {
-    if (!avatar) return alert('Avtar required');
+    if (!avatar) return alert('Avatar required');
 
     try {
       const res = await addCard(avatar, data.links);
@@ -96,7 +98,7 @@ export default function MultiLinkForm() {
               className="rounded-full object-cover w-24 h-24 border shadow-md"
             />
           ) : (
-            <UserCircle className="w-24 h-24 text-gray-400 dark:text-gray-600" />
+            <FaUserCircle className="w-24 h-24 text-gray-400 dark:text-gray-600" />
           )}
           <Input
             type="file"
@@ -116,7 +118,7 @@ export default function MultiLinkForm() {
           const IconComponent =
             socialIcons.find(
               (icon) => icon.value === form.watch(`links.${index}.icon`),
-            )?.icon || Globe;
+            )?.icon || FaGlobe;
 
           return (
             <div
@@ -130,7 +132,7 @@ export default function MultiLinkForm() {
                   className="absolute top-2 right-2 text-red-500 hover:text-red-700 transition"
                   onClick={() => remove(index)}
                 >
-                  <Trash2 size={18} />
+                  <FaTrashAlt size={18} />
                 </button>
               )}
 
@@ -217,18 +219,18 @@ export default function MultiLinkForm() {
           );
         })}
 
-        {/* Add Link */}
+        {/* Add Link Button */}
         <Button
           type="button"
           variant="outline"
           onClick={() => append({ label: '', url: '', icon: 'github' })}
           className="dark:border-gray-600 dark:text-white"
         >
-          <Plus className="mr-2" size={16} />
+          <FaPlus className="mr-2" size={16} />
           Add Another Link
         </Button>
 
-        {/* Submit */}
+        {/* Submit Button */}
         <div>
           <Button type="submit" className="dark:bg-white dark:text-black">
             Save Links
