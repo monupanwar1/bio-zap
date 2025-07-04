@@ -25,15 +25,12 @@ export async function addCard(
     throw new Error('Unauthorized');
   }
 
-  // 🔥 Fetch user from Clerk
-
   const name = await getUserName();
-
   const slug = nanoid(8);
 
   return await prisma.card.create({
     data: {
-      title: `${name} Card`, // 👈 Use Clerk's name here
+      title: `${name} Card`,
       avatarUrl,
       userId,
       slug,
@@ -43,6 +40,7 @@ export async function addCard(
     },
   });
 }
+
 
 export async function getUserCard() {
   const { userId } = await auth();

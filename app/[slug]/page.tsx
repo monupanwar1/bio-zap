@@ -3,13 +3,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import prisma from '@/lib/db';
 
-type Params = {
-  params: { slug: string };
+type PageProps = {
+  params: Promise<{ slug: string }>;
 };
 
-export default async function PublicPage({ params }: Params) {
+export default async function PublicPage({ params }: PageProps) {
+  const {slug} = await params;
   const card = await prisma.card.findUnique({
-    where: { slug: params.slug },
+
+    where: { slug},
     include: { links: true },
   });
 

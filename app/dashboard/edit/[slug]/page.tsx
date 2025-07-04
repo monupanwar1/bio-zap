@@ -48,7 +48,12 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function EditCardPage({ params }: { params: { slug: string } }) {
+interface PageProps {
+  params:Promise<{slug:string}>
+
+}
+
+export default function EditCardPage({ params }: PageProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [avatar, setAvatar] = useState<string | null>(null);
@@ -68,7 +73,8 @@ export default function EditCardPage({ params }: { params: { slug: string } }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const card = await getCardBySlug(params.slug); // ✅ implement this in your backend
+      const {slug} = await params;
+      const card = await getCardBySlug(slug); // ✅ implement this in your backend
       if (!card) {
         alert('Card not found');
         router.push('/dashboard/cards');
@@ -84,15 +90,16 @@ export default function EditCardPage({ params }: { params: { slug: string } }) {
     };
 
     fetchData();
-  }, [params.slug]);
+  },);
 
   const onSubmit = async (data: FormValues) => {
+    const {slug} =await params;
     if (!avatar) {
       alert('Avatar is required');
       return;
     }
 
-    const success = await editCard(params.slug, avatar, data.links, data.title);
+    const success = await editCard(slug, avatar, data.links, data.title);
     if (success) {
       router.push('/dashboard/cards');
     } else {
