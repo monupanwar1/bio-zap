@@ -1,22 +1,7 @@
-
 'use client';
 
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { z } from 'zod';
-import { useForm, useFieldArray } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  FaGithub,
-  FaTwitter,
-  FaLinkedin,
-  FaGlobe,
-  FaTrashAlt,
-  FaPlus,
-  FaUserCircle,
-} from 'react-icons/fa';
 import { editCard, getCardBySlug } from '@/actions/actions'; // Ensure these exist
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -26,7 +11,21 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import {
+  FaGithub,
+  FaGlobe,
+  FaLinkedin,
+  FaPlus,
+  FaTrashAlt,
+  FaTwitter,
+  FaUserCircle,
+} from 'react-icons/fa';
+import { z } from 'zod';
 
 const socialIcons = [
   { value: 'github', label: 'GitHub', icon: FaGithub },
@@ -49,8 +48,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface PageProps {
-  params:Promise<{slug:string}>
-
+  params: Promise<{ slug: string }>;
 }
 
 export default function EditCardPage({ params }: PageProps) {
@@ -73,7 +71,7 @@ export default function EditCardPage({ params }: PageProps) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const {slug} = await params;
+      const { slug } = await params;
       const card = await getCardBySlug(slug); // ✅ implement this in your backend
       if (!card) {
         alert('Card not found');
@@ -90,10 +88,10 @@ export default function EditCardPage({ params }: PageProps) {
     };
 
     fetchData();
-  },);
+  }, [router, form, params]);
 
   const onSubmit = async (data: FormValues) => {
-    const {slug} =await params;
+    const { slug } = await params;
     if (!avatar) {
       alert('Avatar is required');
       return;
